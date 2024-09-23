@@ -47,18 +47,41 @@ async function run() {
       console.log(token);
     });
     // save user in database
-    app.post("/saveUser", async (req, res) => {
+    app.post("/register", async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email };
+
+      try {
+        const isExist = await usersCollection.findOne(query);
+
+        if (isExist) {
+          return res.status(409).send({ message: "User already exists" });
+        } else {
+          const result = await usersCollection.insertOne(user);
+          const result2 = await usersCollection.findOne(query);
+          return res.send(result2);
+        }
+      } catch (error) {
+        return res
+          .status(500)
+          .send({ message: "Server error", error: error.message });
+      }
+    });
+
+    app.post("/login", async (req, res) => {
       const user = req.body;
       const query = { email: user.email };
       const isExist = await usersCollection.findOne(query);
 
-      console.log("User found?----->", isExist);
-
       if (isExist) {
-        return res.send(isExist);
+        // check password
+        if (isExist.password === user.password) {
+          return res.send(isExist);
+        } else {
+          return res.status(404).send({ message: "Password is incorrect" });
+        }
       } else {
-        const result = await usersCollection.insertOne(user);
-        res.send(result);
+        return res.status(404).send({ message: "User not found" });
       }
     });
 
