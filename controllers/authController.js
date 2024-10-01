@@ -13,7 +13,10 @@ const registerUser = async (req, res) => {
       return res.status(409).send({ message: "User already exists" });
     } else {
       const result = await usersCollection.insertOne(user);
-      return res.send(result);
+      const userData = await usersCollection.findOne(query);
+
+      return res.send(userData);
+      // Send back the new user data to the client
     }
   } catch (error) {
     return res
@@ -29,7 +32,14 @@ const loginUser = async (req, res) => {
 
   const isExist = await usersCollection.findOne(query);
   if (isExist && isExist.password === user.password) {
-    return res.send(isExist);
+    const logInUser = {
+      _id: isExist.insertedId,
+      name: isExist.name,
+      email: isExist.email,
+      image: isExist.image,
+      status: isExist.status,
+    };
+    return res.send(logInUser);
   } else {
     return res.status(404).send({ message: "Invalid credentials" });
   }
