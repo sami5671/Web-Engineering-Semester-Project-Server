@@ -12,6 +12,7 @@ const userRoutes = require("./routes/userRoutes");
 
 const corsOptions = {
   origin: ["http://localhost:5173"],
+  // origin: ["https://tube-nest.web.app"],
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -32,3 +33,5 @@ connectDB().then(() => {
     console.log(`Server is running on port ${port}`);
   });
 });
+
+module.exports = app;
