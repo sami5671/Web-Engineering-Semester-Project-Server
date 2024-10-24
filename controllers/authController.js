@@ -38,6 +38,7 @@ const loginUser = async (req, res) => {
       email: isExist.email,
       image: isExist.image,
       status: isExist.status,
+      request: isExist.request || "",
     };
     return res.send(logInUser);
   } else {

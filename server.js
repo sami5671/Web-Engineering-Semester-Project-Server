@@ -9,6 +9,7 @@ const port = process.env.PORT || 9000;
 const authRoutes = require("./routes/authRoutes");
 const videoRoutes = require("./routes/videoRoutes");
 const userRoutes = require("./routes/userRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 const corsOptions = {
   origin: ["http://localhost:5173"],
@@ -20,6 +21,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+app.use("/admin", adminRoutes);
 app.use("/auth", authRoutes);
 app.use("/videos", videoRoutes);
 app.use("/user", userRoutes);

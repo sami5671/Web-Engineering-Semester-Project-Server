@@ -6,6 +6,7 @@ const {
   saveVideo,
   getUserSaveVideos,
   deleteSaveVideos,
+  userRequestSending,
 } = require("../controllers/userVideoController");
 
 const router = express.Router();
@@ -15,5 +16,6 @@ router.patch("/dislikeVideoApi/:id", disLikeVideo);
 router.post("/postSaveVideo/:id", saveVideo);
 router.get("/getSaveVideoUser/:email", getUserSaveVideos);
 router.delete("/deleteUserSaveVideo/:id", deleteSaveVideos);
+router.patch("/userRequestSend", userRequestSending);
 
 module.exports = router;

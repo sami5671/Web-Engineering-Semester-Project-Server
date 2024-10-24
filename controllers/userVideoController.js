@@ -2,6 +2,7 @@ const { ObjectId } = require("mongodb");
 const { client } = require("../config/db");
 const videosCollection = client.db("TubeNest").collection("videos");
 const userSaveVideosCollection = client.db("TubeNest").collection("saveVideos");
+const usersCollection = client.db("TubeNest").collection("users");
 
 const likeVideo = async (req, res) => {
   const videoId = req.params.id;
@@ -152,10 +153,34 @@ const deleteSaveVideos = async (req, res) => {
   }
 };
 
+const userRequestSending = async (req, res) => {
+  try {
+    const userEmail = req.body.email;
+    const user = await usersCollection.findOne({ email: userEmail });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    } else {
+      const updatedUser = await usersCollection.findOneAndUpdate(
+        { email: userEmail }, // Search criteria
+        { $set: { request: "pending" } }, // Use $set to update the request field
+        { new: true } // Return the updated document
+      );
+
+      return res
+        .status(200)
+        .json({ message: "Request updated to pending", user: updatedUser });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "An error occurred", error });
+  }
+};
 module.exports = {
   likeVideo,
   disLikeVideo,
   saveVideo,
   getUserSaveVideos,
   deleteSaveVideos,
+  userRequestSending,
 };
