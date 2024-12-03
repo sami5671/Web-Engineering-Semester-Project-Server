@@ -11,10 +11,10 @@ const getAllUsers = async (req, res) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+
 const giveAccessToUsers = async (req, res) => {
   try {
     const userId = req.body.userId;
-
     // Find the user by ID
     const user = await usersCollection.findOne({ _id: new ObjectId(userId) });
 

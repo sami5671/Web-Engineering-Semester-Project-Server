@@ -12,8 +12,8 @@ const userRoutes = require("./routes/userRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
-  // origin: ["https://tube-nest.web.app"],
+  // origin: ["http://localhost:5173"],
+  origin: ["https://tube-nest.web.app"],
   credentials: true,
   optionSuccessStatus: 200,
 };
